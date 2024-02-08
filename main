@@ -1,0 +1,70 @@
+public interface Vehicle {
+    double getBaseRate(); 
+}
+
+public class Car implements Vehicle {
+    private final boolean convertible; 
+
+    public Car(boolean convertible) {
+        this.convertible = convertible;
+    }
+
+    @Override
+    public double getBaseRate() {
+        return convertible ? 60.0 : 50.0; 
+    }
+}
+
+public class Bike implements Vehicle {
+    private final int seatCount; 
+
+    public Bike(int seatCount) {
+        this.seatCount = seatCount;
+    }
+
+    @Override
+    public double getBaseRate() {
+        return seatCount > 1 ? 25.0 : 20.0;
+    }
+}
+
+public class Scooter implements Vehicle {
+    private final boolean electric; 
+
+    public Scooter(boolean electric) {
+        this.electric = electric;
+    }
+
+    @Override
+    public double getBaseRate() {
+        return electric ? 15.0 : 10.0; 
+    }
+}
+
+public class VehicleRentalService {
+
+    public double rentVehicle(Vehicle vehicle, int duration, boolean insurance) {
+        double baseRate = vehicle.getBaseRate();
+        double total = baseRate * duration;
+        if (insurance) {
+            total += (baseRate * INSURANCE_RATE) * duration;
+        }
+        return total;
+    }
+
+    
+    public double rentCar(int duration, boolean convertible, boolean insurance) {
+        Car car = new Car(convertible);
+        return rentVehicle(car, duration, insurance);
+    }
+
+    public double rentBike(int duration, int seatCount, boolean insurance) {
+        Bike bike = new Bike(seatCount);
+        return rentVehicle(bike, duration, insurance);
+    }
+
+    public double rentScooter(int duration, boolean electric, boolean insurance) {
+        Scooter scooter = new Scooter(electric);
+        return rentVehicle(scooter, duration, insurance);
+    }
+}
